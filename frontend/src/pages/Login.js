@@ -1,12 +1,13 @@
 // src/pages/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Container } from '@mui/material';
+import { TextField, Button, Typography, Container, Paper, Snackbar, Alert } from '@mui/material';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -23,36 +24,48 @@ function Login() {
         navigate('/admin');
       } else {
         setError(data.error);
+        setOpenSnackbar(true);
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
+      setOpenSnackbar(true);
     }
   };
 
   return (
-    <Container style={{ maxWidth: '400px', marginTop: '40px' }}>
-      <Typography variant="h4" gutterBottom>Admin Login</Typography>
-      {error && <Typography color="error">{error}</Typography>}
-      <form onSubmit={handleLogin}>
-        <TextField
-          label="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          fullWidth
-          required
-          style={{ marginBottom: '10px' }}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          fullWidth
-          required
-          style={{ marginBottom: '10px' }}
-        />
-        <Button type="submit" variant="contained" color="primary" fullWidth>Login</Button>
-      </form>
+    <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+      <Paper elevation={3} sx={{ padding: '2em', maxWidth: 400, width: '100%' }}>
+        <Typography variant="h4" gutterBottom align="center">Admin Login</Typography>
+        <form onSubmit={handleLogin}>
+          <TextField
+            label="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            fullWidth
+            required
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            fullWidth
+            required
+            sx={{ marginBottom: 2 }}
+          />
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Login
+          </Button>
+        </form>
+      </Paper>
+
+      {/* Snackbar for error messages */}
+      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>
+        <Alert onClose={() => setOpenSnackbar(false)} severity="error" sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

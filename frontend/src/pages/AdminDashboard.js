@@ -1,25 +1,22 @@
 // src/pages/AdminDashboard.js
+
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, List, ListItem, ListItemText, Container } from '@mui/material';
 import { fetchProperties, createProperty, updateProperty, deleteProperty } from '../services/api';
+import FlatList from '../components/FlatList';
+import FlatItem from '../components/FlatItem';
+import { TextField, Button, Typography, Grid, Snackbar, Alert, Box } from '@mui/material';
 
 function AdminDashboard() {
-  const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
   const [formData, setFormData] = useState({ title: '', description: '', price: '', location: '' });
   const [editMode, setEditMode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    } else {
-      loadProperties();
-    }
-  }, [navigate]);
+    loadProperties();
+  }, []);
 
   const loadProperties = async () => {
     try {
@@ -27,22 +24,19 @@ function AdminDashboard() {
       setProperties(data);
     } catch (error) {
       setFeedbackMessage('Failed to load properties');
+      setOpenSnackbar(true);
     }
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (editMode) {
-        const response = await updateProperty(currentId, formData);
-        setFeedbackMessage(response.message || 'Property updated successfully');
+        await updateProperty(currentId, formData);
+        setFeedbackMessage('Property updated successfully');
       } else {
-        const response = await createProperty(formData);
-        setFeedbackMessage(response.message || 'Property added successfully');
+        await createProperty(formData);
+        setFeedbackMessage('Property added successfully');
       }
       setFormData({ title: '', description: '', price: '', location: '' });
       setEditMode(false);
@@ -51,6 +45,7 @@ function AdminDashboard() {
     } catch (error) {
       setFeedbackMessage('An error occurred');
     }
+    setOpenSnackbar(true);
   };
 
   const handleEdit = (property) => {
@@ -61,76 +56,95 @@ function AdminDashboard() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await deleteProperty(id);
-      setFeedbackMessage(response.message || 'Property deleted successfully');
+      await deleteProperty(id);
+      setFeedbackMessage('Property deleted successfully');
       setProperties(properties.filter(property => property._id !== id));
     } catch (error) {
       setFeedbackMessage('An error occurred');
     }
+    setOpenSnackbar(true);
   };
 
   return (
-    <Container style={{ padding: '20px' }}>
+    <Box sx={{ padding: '20px' }}>
       <Typography variant="h4" gutterBottom>Admin Dashboard</Typography>
 
-      {feedbackMessage && <Typography color="secondary">{feedbackMessage}</Typography>}
-
-      <form onSubmit={handleSubmit} style={{ marginBottom: '20px' }}>
-        <TextField
-          label="Title"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-          fullWidth
-          style={{ marginBottom: '10px' }}
-        />
-        <TextField
-          label="Description"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          required
-          fullWidth
-          style={{ marginBottom: '10px' }}
-        />
-        <TextField
-          label="Price"
-          name="price"
-          type="number"
-          value={formData.price}
-          onChange={handleChange}
-          required
-          fullWidth
-          style={{ marginBottom: '10px' }}
-        />
-        <TextField
-          label="Location"
-          name="location"
-          value={formData.location}
-          onChange={handleChange}
-          required
-          fullWidth
-          style={{ marginBottom: '10px' }}
-        />
-        <Button type="submit" variant="contained" color="primary">
-          {editMode ? 'Update Property' : 'Add Property'}
-        </Button>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Title"
+              name="title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Price"
+              name="price"
+              type="number"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Location"
+              name="location"
+              value={formData.location}
+              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+              fullWidth
+              required
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary">
+              {editMode ? 'Update Property' : 'Add Property'}
+            </Button>
+          </Grid>
+        </Grid>
       </form>
 
-      <List>
+      <FlatList>
         {properties.map(property => (
-          <ListItem key={property._id} style={{ borderBottom: '1px solid #ddd' }}>
-            <ListItemText
-              primary={property.title}
-              secondary={`Location: ${property.location} | Price: $${property.price}`}
-            />
-            <Button onClick={() => handleEdit(property)} color="primary">Edit</Button>
-            <Button onClick={() => handleDelete(property._id)} color="secondary">Delete</Button>
-          </ListItem>
+          <FlatItem 
+            key={property._id} 
+            title={property.title} 
+            description={property.description} 
+            price={property.price} 
+            location={property.location}
+            onEdit={() => handleEdit(property)}
+            onDelete={() => handleDelete(property._id)}
+          />
         ))}
-      </List>
-    </Container>
+      </FlatList>
+
+      {/* Snackbar for feedback messages */}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert onClose={() => setOpenSnackbar(false)} severity="info" sx={{ width: '100%' }}>
+          {feedbackMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 }
 
