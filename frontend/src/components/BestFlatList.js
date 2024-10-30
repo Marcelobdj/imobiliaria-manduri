@@ -1,15 +1,14 @@
-// src/components/BestFlatList.js
 
 import React from 'react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
 
 const BestFlatList = () => {
   return (
-    <Box className="best-flat-list" sx={{ padding: '20px', textAlign: 'center' }}>
-      <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
+    <Box className="section-best-estate" sx={{ padding: '40px', textAlign: 'center' }}>
+      <Typography variant="h4" className="title">
         Featured Properties
       </Typography>
-      <Typography variant="body1" sx={{ mb: 4 }}>
+      <Typography variant="body1" className="title-description">
         Explore our handpicked selection of the best properties.
       </Typography>
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
@@ -20,6 +19,9 @@ const BestFlatList = () => {
               width: '300px',
               position: 'relative',
               overflow: 'hidden',
+              boxShadow: 3,
+              transition: 'transform 0.3s ease-in-out',
+              '&:hover': { transform: 'scale(1.05)', boxShadow: 6 },
               '&::before': {
                 content: '"Featured"',
                 position: 'absolute',
@@ -29,7 +31,9 @@ const BestFlatList = () => {
                 color: '#fff',
                 padding: '5px 10px',
                 fontWeight: 'bold',
-                borderRadius: '0 0 5px 0'
+                borderRadius: '0 0 5px 0',
+                fontSize: '0.8rem',
+                animation: 'fadeIn 0.5s ease-in-out',
               }
             }}
           >

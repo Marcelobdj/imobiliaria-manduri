@@ -1,4 +1,3 @@
-// src/pages/AdminDashboard.js
 
 import React, { useEffect, useState } from 'react';
 import { fetchProperties, createProperty, updateProperty, deleteProperty } from '../services/api';
@@ -66,7 +65,7 @@ function AdminDashboard() {
   };
 
   return (
-    <Box sx={{ padding: '20px' }}>
+    <Box sx={{ padding: '20px', maxWidth: '900px', margin: 'auto' }}>
       <Typography variant="h4" gutterBottom>Admin Dashboard</Typography>
 
       <form onSubmit={handleSubmit}>

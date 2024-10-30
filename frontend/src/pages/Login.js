@@ -1,4 +1,4 @@
-// src/pages/Login.js
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, Paper, Snackbar, Alert } from '@mui/material';
@@ -54,7 +54,7 @@ function Login() {
             required
             sx={{ marginBottom: 2 }}
           />
-          <Button type="submit" variant="contained" color="primary" fullWidth>
+          <Button type="submit" variant="contained" color="primary" fullWidth sx={{ marginTop: 2 }}>
             Login
           </Button>
         </form>
