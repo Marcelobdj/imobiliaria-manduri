@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: docker_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://manduri-mongo:27017/imobiliaria_manduri
+    depends_on:
+      - manduri-mongo
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: docker_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  manduri-mongo:
+    image: mongo
+    container_name: manduri-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+    driver: local

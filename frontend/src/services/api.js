@@ -1,5 +1,5 @@
 // src/services/api.js
-const API_URL = 'http://localhost:5000/api/properties';
+const API_URL = 'http://manduri-mongo:5000/api/properties';
 
 // Helper function to get authorization headers
 const getAuthHeaders = () => {
