@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import heroImage from '../assets/hero-image.jpg';
+import heroImage from '../assets/hero-image.webp';
 import { keyframes } from '@mui/system';
 
 // Define fade-in animation
@@ -32,14 +32,14 @@ const Banner = () => {
         animation: `${fadeIn} 2s ease-in`,
       }}
     >
-      <Typography variant="h2" sx={{ fontWeight: 'bold', mb: 2, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
-        Welcome to Imobiliária Manduri
+      <Typography variant="h2" sx={{ color: '#FFFFFF', fontWeight: 'bold', mb: 2, fontSize: { xs: '2.5rem', md: '3.5rem' } }}>
+        Bem vindo a Imobiliária Manduri
       </Typography>
-      <Typography variant="h6" sx={{ fontSize: { xs: '1rem', md: '1.5rem' }, mb: 3 }}>
-        Discover the best properties in Manduri.
+      <Typography variant="h6" sx={{ color: '#FFFFFF', fontSize: { xs: '1rem', md: '1.5rem' }, mb: 3 }}>
+        As melhores propriedades de Manduri e região.
       </Typography>
-      <Button variant="contained" sx={{ backgroundColor: '#3498DB', '&:hover': { backgroundColor: '#2C3E50' } }}>
-        Explore Now
+      <Button variant="contained" sx={{ backgroundColor: '#FFFFFF', color: '#283940', '&:hover': { backgroundColor: '#79DCF2' } }}>
+        Explore todas as propriedades
       </Button>
     </Box>
   );

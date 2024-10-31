@@ -9,7 +9,7 @@ const FlatItem = ({ slug }) => {
       sx={{ 
         maxWidth: 345, 
         margin: 'auto', 
-        backgroundColor: '#FFFFFF', 
+        backgroundColor: '#127369', 
         boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px', 
         transition: 'transform 0.3s ease-in-out',
         '&:hover': { transform: 'scale(1.05)' } 
@@ -52,7 +52,7 @@ const FlatItem = ({ slug }) => {
             color="primary"
             sx={{ 
               backgroundColor: '#F39C12', 
-              '&:hover': { backgroundColor: '#2C3E50' }
+              '&:hover': { backgroundColor: '#127369' }
             }}
           >
             View

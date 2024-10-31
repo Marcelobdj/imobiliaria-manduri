@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#2C3E50', padding: '0.5em 0' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#127369', padding: '0.5em 0' }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h6" component={Link} to="/" sx={{ color: '#fff', textDecoration: 'none', fontWeight: 'bold' }}>
           Imobiliária Manduri
