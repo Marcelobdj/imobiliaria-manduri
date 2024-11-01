@@ -1,15 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const propertyController = require('../controllers/propertyController');
-const authMiddleware = require('../middleware/authMiddleware');
+const Property = require('../models/Property');
 
-// Protected routes
-router.post('/', authMiddleware, propertyController.createProperty);
-router.put('/:id', authMiddleware, propertyController.updateProperty);
-router.delete('/:id', authMiddleware, propertyController.deleteProperty);
+// Get all properties
+router.get('/', async (req, res) => {
+    try {
+        const properties = await Property.find();
+        res.json(properties);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
 
-// Public route
-router.get('/', propertyController.getAllProperties);
-router.get('/:id', propertyController.getPropertyById);
+// Create a new property
+router.post('/', async (req, res) => {
+    const property = new Property(req.body);
+    try {
+        const newProperty = await property.save();
+        res.status(201).json(newProperty);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
 
 module.exports = router;

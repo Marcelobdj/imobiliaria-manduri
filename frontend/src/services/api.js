@@ -1,5 +1,5 @@
 // src/services/api.js
-const API_URL = 'http://manduri-mongo:5000/api/properties';
+const API_URL = 'http://localhost:5000/api/properties';
 
 // Helper function to get authorization headers
 const getAuthHeaders = () => {
@@ -12,10 +12,27 @@ const getAuthHeaders = () => {
 
 // Fetch all properties
 export const fetchProperties = async () => {
-  const response = await fetch(API_URL, {
-    headers: getAuthHeaders(),
-  });
-  return await response.json();
+  try {
+    const response = await fetch(API_URL, {
+      headers: getAuthHeaders(),
+    });
+
+    // Check content type before parsing
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      const data = await response.json();
+      console.log("Parsed JSON data:", data); // Log JSON data
+      return data;
+    } else {
+      // Log raw response if not JSON
+      const textResponse = await response.text();
+      console.log("Non-JSON response:", textResponse);
+      throw new Error("Expected JSON but received non-JSON response.");
+    }
+  } catch (error) {
+    console.error("Error fetching properties:", error);
+    return []; // Return an empty array or a default fallback value
+  }
 };
 
 // Fetch a single property by ID
